@@ -1,0 +1,13 @@
+body {
+    /* Background pattern from Toptal Subtle Patterns */
+    background-image: url("../images/wheat.png");
+}
+
+.container {
+    text-align: center;
+    background-color: antiquewhite;
+}
+
+.row {
+    padding: 20px;
+}
