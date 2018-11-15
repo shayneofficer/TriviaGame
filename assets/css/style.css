@@ -6,6 +6,12 @@ body {
 .container {
     text-align: center;
     background-color: antiquewhite;
+    padding-top: 3em;
+}
+
+.container h1 {
+    width: 100%;
+    font-size: 5em;
 }
 
 .row {
