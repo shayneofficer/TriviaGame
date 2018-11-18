@@ -18,13 +18,12 @@ var timer = {
         $("#timer").text("Time Remaining: " + timer.seconds + " Seconds");
 
         if (timer.seconds === 0) {
-            timer.end();
+            endGame();
         }
     },
 
     end: function () {
         clearInterval(intervalID);
-        // alert("Game Over!");
     }
 
 }
@@ -32,8 +31,8 @@ var timer = {
 $("#start-button").on("click", function () {
     $("#start-button-row").remove();
 
-    var timerDiv = $("<div>");
-    timerDiv.attr("class", "row question");
+    var timerDiv = $("<div id='timer-box'>");
+    timerDiv.attr("class", "row");
     timerDiv.html(`<div class="col">
                         <h2 id="timer">Time Remaining: 120 Seconds</h2>
                     </div>`);
@@ -46,7 +45,6 @@ $("#start-button").on("click", function () {
         url: queryURL,
         method: "GET"
     }).then(function (response) {
-        console.log(response);
 
         for (var i = 0; i < response.results.length; i++) {
 
@@ -133,7 +131,6 @@ function shuffle(array) {
 
 function endGame() {
     timer.end();
-    $("#timer")
 
     for (var i = 0; i < 8; i++) {
         var selValue = $(`input[name=question${i + 1}]:checked`).val();
@@ -148,11 +145,11 @@ function endGame() {
     }
 
     $(".question").remove();
-    $("#done-button").remove();
+    $("#done-button-row").remove();
+    $("#timer-box").remove();
 
-    $(".container").append(`<p>Correct: ${correct}</p>`);
-    $(".container").append(`<p>Incorrect: ${incorrect}</p>`);
+    $(".container").append(`<h2 style='margin-bottom: 1em;'>All Done!</h2>`);
+    $(".container").append(`<p>Correct Answers: ${correct}</p>`);
+    $(".container").append(`<p>Incorrect Answers: ${incorrect}</p>`);
     $(".container").append(`<p>Unanswered: ${unanswered}</p>`);
-
-    console.log(correct + "\n" + incorrect + "\n" + unanswered);
 }
