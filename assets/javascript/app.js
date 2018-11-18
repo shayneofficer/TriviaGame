@@ -1,10 +1,12 @@
 var intervalID;
 var queryURL = "https://opentdb.com/api.php?amount=8&category=9&difficulty=easy&type=multiple";
-
-// var timerBox = $("#timer");
+var correctAnswers = [];
+var correct = 0;
+var incorrect = 0;
+var unanswered = 8;
 
 var timer = {
-    seconds: 10,
+    seconds: 120,
 
     start: function () {
         clearInterval(intervalID); //prevent stacking
@@ -22,7 +24,7 @@ var timer = {
 
     end: function () {
         clearInterval(intervalID);
-        alert("Game Over!");
+        // alert("Game Over!");
     }
 
 }
@@ -31,7 +33,7 @@ $("#start-button").on("click", function () {
     $("#start-button-row").remove();
 
     var timerDiv = $("<div>");
-    timerDiv.attr("class", "row");
+    timerDiv.attr("class", "row question");
     timerDiv.html(`<div class="col">
                         <h2 id="timer">Time Remaining: 120 Seconds</h2>
                     </div>`);
@@ -50,6 +52,7 @@ $("#start-button").on("click", function () {
 
             var answersArr = response.results[i].incorrect_answers;
             answersArr.push(response.results[i].correct_answer);
+            correctAnswers.push(response.results[i].correct_answer);
 
             answersArr = shuffle(answersArr);
 
@@ -89,17 +92,23 @@ $("#start-button").on("click", function () {
 
         var doneButton = $(`<div class="row" id="done-button-row">
                                 <div class="col">
-                                    <button type="button" id="done-button">
-                                        Done
-                                    </button>
+                                    <button type="button" id="done-button">Done</button>
                                 </div>
                             </div>`);
 
         $(".container").append(doneButton);
     })
 
-    // timer.start();
+    timer.start();
 });
+
+
+//$("#done-button").on("click", function(){}) doesn't work because #done-button isn't in the dom at the time the page loads??
+$(document).on("click", "#done-button", endGame);
+
+if (timer.seconds === 0) {
+    endGame();
+}
 
 
 // Fisher-Yates (aka Knuth) Shuffle
@@ -120,4 +129,30 @@ function shuffle(array) {
     }
 
     return array;
+}
+
+function endGame() {
+    timer.end();
+    $("#timer")
+
+    for (var i = 0; i < 8; i++) {
+        var selValue = $(`input[name=question${i + 1}]:checked`).val();
+        if (selValue === correctAnswers[i]) {
+            correct++;
+            unanswered--;
+        }
+        else if (selValue !== undefined) {
+            incorrect++;
+            unanswered--;
+        }
+    }
+
+    $(".question").remove();
+    $("#done-button").remove();
+
+    $(".container").append(`<p>Correct: ${correct}</p>`);
+    $(".container").append(`<p>Incorrect: ${incorrect}</p>`);
+    $(".container").append(`<p>Unanswered: ${unanswered}</p>`);
+
+    console.log(correct + "\n" + incorrect + "\n" + unanswered);
 }
