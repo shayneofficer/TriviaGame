@@ -4,17 +4,31 @@ body {
 }
 
 .container {
+    margin-top: 2em;
     text-align: center;
     background-color: antiquewhite;
-    padding-top: 3em;
+    padding: 3em 0em;
     width: 66.6%;
 }
 
 .container h1 {
     width: 100%;
     font-size: 5em;
+    margin-bottom: .5em;
 }
 
 .row {
     padding: 20px;
+}
+
+button {
+    padding: 20px 100px;
+    font-size: 2em;
+    background-color: pink;
+    border: 1px purple solid;
+}
+
+button:hover {
+    background-color: #815c5c;
+    cursor: pointer;
 }
